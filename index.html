@@ -199,12 +199,12 @@
               : 0;
             const y = v * length - topEdge;
 
-            // Deep cupping curvature (khum sâu vào trong) and inward-curling tip
+            // Head petals curve outward toward the viewer instead of folding into the bloom.
             const cupShape = isRoseHeadPetal
-              ? -0.28 * (1.0 - u * u) * Math.sin(v * Math.PI * 0.78)
+              ? 0.48 * (1.0 - u * u) * Math.sin(v * Math.PI * 0.78)
               : 0.35 * (1.0 - u * u) * Math.sin(v * Math.PI * 0.9);
-            const inwardTip = Math.pow(v, isRoseHeadPetal ? 3 : 2.5) * (isRoseHeadPetal ? -0.12 : -0.22);
-            const sideFold = Math.pow(Math.abs(u), 3.0) * (isRoseHeadPetal ? 0.12 : 0.15);
+            const inwardTip = Math.pow(v, isRoseHeadPetal ? 3 : 2.5) * (isRoseHeadPetal ? 0.2 : -0.22);
+            const sideFold = Math.pow(Math.abs(u), 3.0) * (isRoseHeadPetal ? 0.2 : 0.15);
             const z = cupShape + inwardTip + sideFold;
 
             pos.setXYZ(i, x, y, z);
@@ -240,9 +240,9 @@
 
           // Concentric rose whorls (Whorl 1: Inner bud core tightly cupped; Whorl 2: Mid overlapping petals; Whorl 3: Outer protective petals)
           const whorls = [
-            { count: 5, radius: 0.12, y: 0.02, baseTilt: 0.35, openSpeed: 0.4, scale: 0.55 },
-            { count: 7, radius: 0.28, y: -0.05, baseTilt: 0.75, openSpeed: 0.8, scale: 0.80 },
-            { count: 9, radius: 0.44, y: -0.12, baseTilt: 1.15, openSpeed: 1.2, scale: 1.05 }
+            { count: 7, radius: 0.01, y: 0.01, baseTilt: 0.35, openSpeed: 0.4, scale: 0.58 },
+            { count: 9, radius: 0.035, y: 0, baseTilt: 0.75, openSpeed: 0.8, scale: 0.86 },
+            { count: 12, radius: 0.065, y: -0.01, baseTilt: 1.15, openSpeed: 1.2, scale: 1.08 }
           ];
 
           whorls.forEach((w, wIdx) => {
@@ -409,7 +409,7 @@
             const p = petalsData[i];
             const bloomBoost = state.bloomFactor * 0.65;
             const breeze = Math.sin(state.time * 1.4 + p.phase) * 0.018;
-            p.pivot.rotation.x = p.baseTilt - (bloomBoost * p.openSpeed) + breeze;
+            p.pivot.rotation.x = p.baseTilt + (bloomBoost * p.openSpeed) + breeze;
           }
 
           // Update falling background petals
